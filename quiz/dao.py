@@ -73,6 +73,16 @@ class AbstractQuizService(ABC):
         ...
 
     @abstractmethod
+    def get_quizes_by_title(self, title: str) -> list[Quiz]:
+        """
+        Возвращает список квизов по названию.
+
+        :param title: Название квиза.
+        :return: Список квизов с подходящими названиями.
+        """
+        ...
+
+    @abstractmethod
     def create_quiz(self, data: dict) -> Quiz:
         """
         Создает новый квиз.
