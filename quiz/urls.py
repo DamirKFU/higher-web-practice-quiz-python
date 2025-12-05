@@ -13,5 +13,5 @@ router.register(r'question', QuestionViewSet)
 router.register(r'quiz', QuizViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]
