@@ -1,4 +1,4 @@
-"""Модуль с контроллерами для вопросов"""
+"""Модуль с контроллерами для вопросов."""
 
 from django.http import HttpRequest
 from rest_framework import viewsets
@@ -12,7 +12,7 @@ from quiz.services.question import QuestionService
 
 class QuestionViewSet(viewsets.ModelViewSet):
     """
-    API для работы с вопросами:
+    API для работы с вопросами.
 
     Стандартные CRUD операции используют ModelViewSet напрямую.
     Нестандартные действия используют QuestionService.
@@ -24,7 +24,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, url_path='by_text/(?P<query>.+)', methods=['get'])
     def by_text(self, request: HttpRequest, query: str) -> Response:
-        """Получение вопроса по тексту"""
+        """Получение вопроса по тексту."""
 
         questions = self.service.get_questions_by_text(query)
         serializer = self.get_serializer(questions, many=True)
@@ -32,7 +32,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, url_path='check', methods=['post'])
     def check(self, request: HttpRequest, pk: str) -> Response:
-        """Проверка ответа на вопрос"""
+        """Проверка ответа на вопрос."""
 
         serializer = QuestionAnswerSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

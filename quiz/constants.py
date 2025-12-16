@@ -1,4 +1,4 @@
-"""Модуль c константами"""
+"""Модуль c константами."""
 
 MAX_LEN_STR = 30
 MAX_LEN_TEXT = 500
@@ -7,3 +7,4 @@ MAX_LEN_CATEGORY_TITLE = 100
 MAX_LEN_ANSWER = 500
 MAX_LEN_EXPLANATION = 250
 MAX_LEN_DIFFICULTY = 6
+MAX_OPTIONS = 2

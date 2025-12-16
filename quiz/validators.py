@@ -1,13 +1,16 @@
-"""Модуль c валидаторами"""
+"""Модуль c валидаторами."""
 
 from django.core.exceptions import ValidationError
 
+from quiz.constants import MAX_OPTIONS
+
 
 def validate_options(value: any) -> None:
-    """проверка волидности вариантов ответа"""
-
+    """Проверка волидности вариантов ответа."""
     if not isinstance(value, list):
         raise ValidationError('Варианты ответа должны быть списком.')
 
-    if len(value) < 2:
-        raise ValidationError('Должно быть минимум 2 варианта ответа.')
+    if len(value) < MAX_OPTIONS:
+        raise ValidationError(
+            f'Должно быть минимум {MAX_OPTIONS} варианта ответа.'
+        )

@@ -1,4 +1,4 @@
-"""Модуль c моделями приложения quiz"""
+"""Модуль c моделями приложения quiz."""
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -11,6 +11,7 @@ from quiz.constants import (
     MAX_LEN_QUIZ_TITLE,
     MAX_LEN_STR,
     MAX_LEN_TEXT,
+    MAX_OPTIONS,
 )
 from quiz.validators import validate_options
 
@@ -19,17 +20,18 @@ class Category(models.Model):
     title = models.CharField(
         max_length=MAX_LEN_CATEGORY_TITLE,
         verbose_name='название категории',
+        unique=True,
     )
 
     class Meta:
-        """meta настроки"""
+        """Meta настроки."""
 
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
         ordering = ['title']
 
     def __str__(self):
-        """выводит титульник"""
+        """Выводит титульник."""
         return self.title[:MAX_LEN_STR]
 
 
@@ -47,14 +49,14 @@ class Quiz(models.Model):
     )
 
     class Meta:
-        """meta настроки"""
+        """Meta настроки."""
 
         verbose_name = 'квиз'
         verbose_name_plural = 'квизы'
         ordering = ['title']
 
     def __str__(self):
-        """выводит титульник"""
+        """Выводит титульник."""
         return self.title[:MAX_LEN_STR]
 
 
@@ -91,7 +93,7 @@ class Question(models.Model):
 
     options = models.JSONField(
         verbose_name='варианты ответа',
-        help_text='должно быть 2 или более вариантов',
+        help_text=f'должно быть {MAX_OPTIONS} или более вариантов',
         validators=[validate_options],
     )
 
@@ -114,7 +116,7 @@ class Question(models.Model):
     )
 
     class Meta:
-        """meta настроки"""
+        """Meta настроки."""
 
         verbose_name = 'вопрос'
         verbose_name_plural = 'вопросы'
@@ -122,7 +124,7 @@ class Question(models.Model):
         default_related_name = 'questions'
 
     def clean(self) -> None:
-        """проверка коректности модели"""
+        """Проверка коректности модели."""
         super().clean()
 
         if self.correct_answer not in self.options:
@@ -133,5 +135,5 @@ class Question(models.Model):
             })
 
     def __str__(self):
-        """выводит текст"""
+        """Выводит текст."""
         return self.text[:MAX_LEN_STR]

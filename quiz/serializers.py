@@ -1,4 +1,4 @@
-"""Модуль c сериализаторами"""
+"""Модуль c сериализаторами."""
 
 from rest_framework import serializers
 
@@ -7,10 +7,10 @@ from quiz.models import Category, Question, Quiz
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    """Сериализатор для категорий"""
+    """Сериализатор для категорий."""
 
     class Meta:
-        """meta настроки"""
+        """Meta настроки."""
 
         model = Category
         fields = [
@@ -20,10 +20,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    """Сериализатор для вопросов"""
+    """Сериализатор для вопросов."""
 
     class Meta:
-        """meta настроки"""
+        """Meta настроки."""
 
         model = Question
         fields = [
@@ -46,10 +46,10 @@ class QuestionAnswerSerializer(serializers.Serializer):
 
 
 class QuizSerializer(serializers.ModelSerializer):
-    """Сериализатор для квизов"""
+    """Сериализатор для квизов."""
 
     class Meta:
-        """meta настроки"""
+        """Meta настроки."""
 
         model = Quiz
         fields = [

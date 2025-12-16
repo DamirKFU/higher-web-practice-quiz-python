@@ -1,16 +1,15 @@
-"""Модуль с реализацией сервиса вопросов"""
-
-import random
+"""Модуль с реализацией сервиса вопросов."""
 
 from django.shortcuts import get_object_or_404
 
 from quiz.dao import AbstractQuestionService
 from quiz.models import Question
 from quiz.services.quiz import QuizService
+from quiz.utils import update_instance
 
 
 class QuestionService(AbstractQuestionService):
-    """Реализация сервиса для вопросов"""
+    """Реализация сервиса для вопросов."""
 
     quiz_service = QuizService()
 
@@ -68,13 +67,7 @@ class QuestionService(AbstractQuestionService):
         :param data: Данные для обновления вопроса.
         :return: Обновленный вопрос.
         """
-        question = get_object_or_404(Question, pk=question_id)
-        for field, value in data.items():
-            setattr(question, field, value)
-
-        question.save()
-
-        return question
+        return update_instance(Question, question_id, data)
 
     def delete_question(self, question_id: int) -> None:
         """
@@ -82,8 +75,7 @@ class QuestionService(AbstractQuestionService):
 
         :param question_id: Идентификатор вопроса для удаления.
         """
-        question = get_object_or_404(Question, pk=question_id)
-        question.delete()
+        get_object_or_404(Question, pk=question_id).delete()
 
     def check_answer(self, question_id: int, answer: str) -> bool:
         """
@@ -93,8 +85,10 @@ class QuestionService(AbstractQuestionService):
         :param answer: Ответ пользователя.
         :return: True, если ответ правильный, False - в противном случае.
         """
-        question = get_object_or_404(Question, pk=question_id)
-        return question.correct_answer == answer
+        return Question.objects.filter(
+            pk=question_id,
+            correct_answer=answer,
+        ).exists()
 
     def random_question_from_quiz(self, quiz_id: int) -> Question:
         """
@@ -103,7 +97,11 @@ class QuestionService(AbstractQuestionService):
         :param quiz_id: Идентификатор квиза.
         :return: Случайный вопрос из квиза.
         """
-        questions = list(Question.objects.filter(quiz_id=quiz_id))
-        if not questions:
-            return None
-        return random.choice(questions)
+        return (
+            self.quiz_service.get_quiz(
+                quiz_id,
+            )
+            .questions
+            .order_by('?')
+            .first()
+        )

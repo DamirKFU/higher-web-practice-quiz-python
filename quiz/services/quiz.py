@@ -1,14 +1,15 @@
-"""Модуль с реализацией сервиса квизов"""
+"""Модуль с реализацией сервиса квизов."""
 
 
 from django.shortcuts import get_object_or_404
 
 from quiz.dao import AbstractQuizService
 from quiz.models import Quiz
+from quiz.utils import update_instance
 
 
 class QuizService(AbstractQuizService):
-    """Реализация сервиса для квиза"""
+    """Реализация сервиса для квиза."""
 
     def list_quizzes(self) -> list[Quiz]:
         """Возвращает список всех квизов."""
@@ -49,13 +50,7 @@ class QuizService(AbstractQuizService):
         :param data: Данные для обновления квиза.
         :return: Обновленный квиз.
         """
-        quiz = get_object_or_404(Quiz, pk=quiz_id)
-
-        for field, value in data.items():
-            setattr(quiz, field, value)
-
-        quiz.save()
-        return quiz
+        return update_instance(Quiz, quiz_id, data)
 
     def delete_quiz(self, quiz_id: int) -> None:
         """
@@ -63,5 +58,4 @@ class QuizService(AbstractQuizService):
 
         :param quiz_id: Идентификатор квиза для удаления.
         """
-        quiz = get_object_or_404(Quiz, pk=quiz_id)
-        quiz.delete()
+        get_object_or_404(Quiz, pk=quiz_id).delete()
